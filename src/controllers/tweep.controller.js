@@ -51,7 +51,6 @@ const addTweeps = catchAsync(async (req, res) => {
     res.send('wait');
   } else {
     if (add.length === 0) {
-      res.status(httpStatus.NO_CONTENT).send();
       return res.send('success');
     }
     throw new ApiError(httpStatus.FORBIDDEN, `Greater than custom number of tweeps: ${max}`);
