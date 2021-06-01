@@ -32,7 +32,7 @@ const addTweeps = catchAsync(async (req, res) => {
   for (let i = 0; i < result.length; i += 1) {
     const idx = add.indexOf(result[i].userinfo.username);
     add.splice(idx, 1);
-    if (tweeps.length < max) {
+    if (tweeps.length < max || max < 0) {
       tweeps.push(result[i].userinfo.username);
     } else {
       flag = true;
@@ -41,7 +41,7 @@ const addTweeps = catchAsync(async (req, res) => {
   }
   await userService.updateUserById(id, { tweeps });
 
-  if (add.length > 0 && !flag && add.length + tweeps.length <= max) {
+  if (add.length > 0 && !flag && (add.length + tweeps.length <= max || max < 0)) {
     await ghApi.request(`POST ${process.env.GITHUB_REPO_URL}`, {
       event_type: req.body.event_type,
       client_payload: {
